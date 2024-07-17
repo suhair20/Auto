@@ -1,0 +1,38 @@
+/* Header.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@font-face {
+  font-family:"Playball";
+  src: url("./assets/playball.zip");
+}
+
+@font-face {
+  font-family: "Passion";
+  src: url("./assets/Passion_One.zip");
+
+}
+.navbar-color {
+    background-color: rgba(52, 147, 119, 0.45); /* 45% opacity */
+    color: #ffffff; /* White text color */
+  }
+
+
+  .navbar-color .font-playball{
+    color: #ffffff;
+    text-align: center;
+    font-size: 2.5rem; 
+  
+  }
+  
+  .container-width{
+    width: 100px;
+  }
+
+
+  .button-color{
+    background-color: #353567;
+    color: white;
+  }
