@@ -15,9 +15,16 @@
 
 }
 .navbar-color {
-    background-color: rgba(52, 147, 119, 0.45); /* 45% opacity */
+    background-color:#145353a9; /* 45% opacity */
     color: #ffffff; /* White text color */
   }
+
+  .bold-navbar{
+    background-color: #116666a9;
+    color: white;
+  }
+
+
 
 
   .navbar-color .font-playball{
@@ -36,3 +43,11 @@
     background-color: #353567;
     color: white;
   }
+
+
+
+/*////////////////*modal css //////////////////////////
+
+/* modal.css */
+/* modal.css */
+
