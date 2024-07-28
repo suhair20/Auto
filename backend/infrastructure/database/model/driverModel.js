@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: false  // Initially not required
     },
     email: {
         type: String,
@@ -15,23 +15,24 @@ const userSchema = new mongoose.Schema({
     },
     Experience: {
         type: Number,
-        default: 0  
+        default: 0,
+        required: false  
     },
     Phone: {
         type: Number,
-        required: true
+        required: false  
     },
     Model: {
         type: String,
-        required: true
+        required: false  
     },
     VehicleNumber: {  
         type: Number,
-        required: true
+        required: false  
     },
     color: {
         type: String,
-        required: true
+        required: false  
     },
     isBlocked: {
         type: Boolean,
@@ -45,11 +46,13 @@ const userSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
-    }
+    },
+   
 });
 
 const Driver = mongoose.model('Driver', userSchema);
 export default Driver;
+
 
 
 

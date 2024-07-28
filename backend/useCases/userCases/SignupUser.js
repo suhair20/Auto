@@ -1,6 +1,6 @@
-import PasswordService from '../infrastructure/services/PasswordServices.js'
-import UserRepository from '../repository/implementation/UserRepository.js'
-import User from '../entities/userEntities.js'
+import PasswordService from '../../infrastructure/services/PasswordServices.js'
+import UserRepository from '../../repository/implementation/UserRepository.js'
+import User from '../../entities/userEntities.js'
 
 class SignupUser{
     constructor(userRepository=new UserRepository(), passwordService=new PasswordService()){

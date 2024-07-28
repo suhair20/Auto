@@ -1,12 +1,12 @@
 
 // userController.js
-import SignupUser from '../../useCases/SignupUser.js'
+import SignupUser from '../../useCases/userCases/SignupUser.js'
 import PasswordService from '../../infrastructure/services/PasswordServices.js'
 import UserRepository from '../../repository/implementation/UserRepository.js'
 import OtpService from '../../infrastructure/services/OTP.js'
-import Otpverifying from '../../useCases/OtpVerifying.js'
-import Resendotp from '../../useCases/resendOtp.js'
-import LoginUser from '../../useCases/LoginUser.js'
+import Otpverifying from '../../useCases/userCases/OtpVerifying.js'
+import Resendotp from '../../useCases/userCases/Resendotp.js'
+import LoginUser from '../../useCases/userCases/LoginUser.js'
 
 
 class UserController {

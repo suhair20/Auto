@@ -12,7 +12,7 @@ export const userSlice=createApi({
       signup:builder.mutation({
         query:(data)=>({
         url:'/user/register',
-        method:'POST',
+        method:'POST',  
         body:data
         
         })

@@ -1,12 +1,12 @@
 // userRoute.js
 import express from 'express'
 import UserController from '../../../inerfaceAdapters/controllers/userController.js'
-import SignupUser from '../../../useCases/SignupUser.js'
+import SignupUser from '../../../useCases/userCases/SignupUser.js'
 import PasswordService from '../../services/PasswordServices.js'
 import UserRepository from '../../../repository/implementation/UserRepository.js'
-import Otpverifying from '../../../useCases/OtpVerifying.js'
+import Otpverifying from '../../../useCases/userCases/OtpVerifying.js'
 import OtpService from '../../services/OTP.js'
-import LoginUser from '../../../useCases/LoginUser.js'
+import LoginUser from '../../../useCases/userCases/LoginUser.js'
 
 
 const userRoute = express.Router();

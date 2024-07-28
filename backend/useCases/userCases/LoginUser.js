@@ -1,7 +1,7 @@
  
-import UserRepository from "../repository/implementation/UserRepository.js";
-import PasswordServices from "../infrastructure/services/PasswordServices.js";
-import Jwt from '../infrastructure/services/Jwt.js'
+import UserRepository from "../../repository/implementation/UserRepository.js";
+import PasswordServices from "../../infrastructure/services/PasswordServices.js";
+import Jwt from '../../infrastructure/services/Jwt.js'
 
  class LoginUser{
     constructor(userRepository=new UserRepository(),passwordServices=new PasswordServices(),jwtToken=new Jwt()){

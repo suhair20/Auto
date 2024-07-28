@@ -1,6 +1,6 @@
 
-import OtpService from '../infrastructure/services/OTP.js'
-import UserRepository from "../repository/implementation/UserRepository.js";
+import OtpService from '../../infrastructure/services/OTP.js'
+import UserRepository from "../../repository/implementation/UserRepository.js";
 
 class Otpverifying{
     constructor(userRepository=new UserRepository(),otpService=new OtpService()){

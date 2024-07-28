@@ -1,7 +1,7 @@
 
 
 
-import Otpservice from '../infrastructure/services/OTP.js'
+import Otpservice from '../../infrastructure/services/OTP.js'
 
 
 class Resendotp{
