@@ -10,6 +10,7 @@ import './User.css';
 function HomeScreen() {
   return (
     <>
+    <Header />
     <div className='navbar-color full-width ' >
       <div className='flex'>
       <div className='  ml-32 py-28 bottom-5 ' > 
@@ -32,7 +33,7 @@ function HomeScreen() {
     />
     <button
       type="submit"
-      className="p-1 font-robot-bold mr-36 border-0 text-white button-color rounded px-4"
+      className="p-1 font-robot-bold mr-36 border-0 text-white navbar-color rounded px-4"
     >
       Start
     </button>

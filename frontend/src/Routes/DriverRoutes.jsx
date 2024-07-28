@@ -1,0 +1,18 @@
+import React from "react";
+import { Route } from "react-router-dom";
+import HomeScreen from "../Components/Driver/HomeScreen";
+import Signup from "../Components/Driver/Signup";
+import Login from "../Components/Driver/Login"
+import Verification from "../Components/Driver/Verification";
+
+
+const DriverRoutes=(
+    <>
+    <Route path="/driver" element={<HomeScreen/>}/>
+    <Route path="/driverSignup" element={<Signup />}/>
+    <Route path="/driverLogin" element={<Login/>}/>
+    <Route path="/verification" element={<Verification/>}/>
+    </>
+)
+
+export default DriverRoutes

@@ -18,10 +18,6 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isAdmin: {
-        type: Boolean,
-        default: false
-    },
     image: {
         type: String, 
         required: false
@@ -31,6 +27,8 @@ const userSchema = new mongoose.Schema({
         default:false
     }
 });
+
+
 
   const User = mongoose.model('User', userSchema);
  export default User

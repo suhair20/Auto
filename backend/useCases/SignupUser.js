@@ -8,7 +8,7 @@ class SignupUser{
     this.PasswordService=passwordService
     }
 
-    async excute(name,password,email){  
+    async execute(name,password,email){  
         
         console.log(password);
         const existingUser=await this.userRepository.findByemail(email)

@@ -18,13 +18,14 @@ class passwordServices{
        }
     }
 
-    async comparePassword(password){
+    async comparePassword(password,oldpass){
         try {
-            const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+            console.log("passbctr");
+            const isPasswordValid = await bcrypt.compare(password, oldpass);
             return isPasswordValid
         } catch (error) {
             console.log(error);
-            throw new Error('')
+            throw new Error('bcrypt error')
         }
     }
 }

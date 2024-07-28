@@ -31,9 +31,9 @@ class UserController {
 
     signup = async (req, res,next) => {
         try {
-            const { name, Password,email } = req.body;
-            console.log(Password);
-            const user = await this.signupUser.excute(name,Password,email)
+            const { name, password,email } = req.body;
+            console.log(password,"pass");
+            const user = await this.signupUser.execute(name,password,email)
             await this.otpService.sendOtp(email)
         
             res.status(201).json({ success: true, user });
@@ -48,6 +48,7 @@ class UserController {
 
     verifyOtp=async(req,res,next)=>{
         try {
+            console.log("vnnitilla");
             const {email,otp}=req.body
             console.log("yvide");
             console.log(req.body);
@@ -79,10 +80,17 @@ class UserController {
  login= async(req,res,next)=>{
     try {
         const {email,password}=req.body
-        const user =await this.loginuser.excute(email,password)
-        res.status(201).json({ success: true, user });
+        const Token =await this.loginuser.excute(email,password)
+        res.cookie('token',Token,{
+            httpOnly:true,
+            secure: process.env.NODE_ENV === 'production', 
+            sameSite:'strict',
+            maxAge: 24 * 60 * 60 * 1000, 
+        })
+        res.status(201).json({ success: true, Token });
     } catch (error) {
         console.log(error);
+        res.status(400).json({ success: false, message: error.message })
         next(error)
     }
  }

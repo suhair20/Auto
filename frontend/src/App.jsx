@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 const App = () => (
   <>
   <Provider  store={store} >
-    <Header />
+    
     <div className=" ">
       <Outlet />
     </div>
