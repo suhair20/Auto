@@ -1,22 +1,24 @@
 class Driver {
     constructor(
-        name,
         email,
         password,
+        name = '',
         Experience = 0,
-        Phone,
-        Model,
-        VehicleNumber,
-        color,
+        Phone = '', 
+        Model = '',
+        VehicleNumber = '',
+        color = '',
         isBlocked = false,
         isAdmin = false,
-        images = [],
+        Profileimage='',
+        Licenceimage='',
         isVerified = false,
-        createdAt = new Date()
+        createdAt = new Date(),
+        isFullyRegistered = false // New field for registration status
     ) {
-        this.name = name;
         this.email = email;
         this.password = password;
+        this.name = name;
         this.Experience = Experience;
         this.Phone = Phone;
         this.Model = Model;
@@ -24,9 +26,11 @@ class Driver {
         this.color = color;
         this.isBlocked = isBlocked;
         this.isAdmin = isAdmin;
-        this.images = images;  // Array for multiple image URLs
+        this.Profileimage=Profileimage;
+        this.Licenceimage=Licenceimage;
         this.isVerified = isVerified;
         this.createdAt = createdAt;
+        this.isFullyRegistered = isFullyRegistered; // New field
     }
 }
 

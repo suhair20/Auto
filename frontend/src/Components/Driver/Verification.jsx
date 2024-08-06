@@ -1,15 +1,72 @@
 import React,{useState} from 'react'
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useVerificationMutation } from '../../slices/driverSlice';
+
 
 function Verification() {
+
+  const navigate = useNavigate()
+
+  const location = useLocation();
+  const email = location.state?.email;
 
     const [profileImage, setProfileImage] = useState('');
   const [licenseImage, setLicenseImage] = useState('');
   const [modalImage, setModalImage] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [image1,setImage1]=useState('')
+  const [image2,setImage2]=useState('')
 
-  const handleImageChange = (event, setImage) => {
+  const [Verification,{isLoading:loadingVerification}]=useVerificationMutation()
+
+  const [name,setName]=useState('')
+  const [experience,setExperience]=useState('')
+  const[phone,setPhone]=useState('')
+  const [Model,setModel]=useState('')
+  const [VehicelNumber,setVehicelNumber]=useState('')
+  const [color,setColor]=useState('')
+  
+
+const handelSubmit=async(e)=>{
+  e.preventDefault()
+  console.log(name);
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('experience', experience);
+  formData.append('phone', phone);
+  formData.append('model', Model);
+  formData.append('vehicleNumber', VehicelNumber);
+  formData.append('color', color);
+  formData.append('email', email);
+  console.log(image1,'images1');
+  console.log(image2);
+  if (image1) formData.append('image', image1);
+  if (image2) formData.append('image', image2);
+
+ 
+  try {
+    const res=await Verification(formData).unwrap()
+   console.log("come");
+    navigate('/dashboard')
+    
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+  const handleImage1Change = (event, setImage) => {
     const file = event.target.files[0];
     if (file) {
+      setImage1(file)
+      const reader = new FileReader();
+      reader.onload = (e) => setImage(e.target.result);
+      reader.readAsDataURL(file);
+    }
+  };
+  const handleImage2Change = (event, setImage) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImage2(file)
       const reader = new FileReader();
       reader.onload = (e) => setImage(e.target.result);
       reader.readAsDataURL(file);
@@ -41,7 +98,7 @@ function Verification() {
      
       
   <div className='flex flex-col lg:flex-row w-full max-w-4xl mt-10'>
-    <form className='grid grid-cols-1 lg:grid-cols-3 gap-4 w-full'>
+    <form onSubmit={handelSubmit} className='grid grid-cols-1 lg:grid-cols-3 gap-4 w-full'>
       {/* First Column */}
       <div className='space-y-4'>
         <div>
@@ -51,6 +108,8 @@ function Verification() {
           <input
             type='name'
             id='name'
+            value={name}
+            onChange={(e)=>setName(e.target.value)}
             name='name'
             className='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
             placeholder='Your name'
@@ -63,6 +122,8 @@ function Verification() {
           <input
             type='number'
             id='experience'
+            value={experience}
+            onChange={(e)=>setExperience(e.target.value)}
             name='experience'
             className='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
             placeholder='Your experience'
@@ -75,6 +136,8 @@ function Verification() {
           <input
             type='number'
             id='number'
+            value={phone}
+            onChange={(e)=>setPhone(e.target.value)}
             name='number'
             className='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
             placeholder='phone number'
@@ -92,6 +155,8 @@ function Verification() {
           <input
             type='text'
             id='model'
+            value={Model}
+            onChange={(e)=>setModel(e.target.value)}
             name='model'
             className='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
             placeholder='Your vehicel model '
@@ -103,6 +168,8 @@ function Verification() {
           </label>
           <input
             type='number'
+            value={VehicelNumber}
+            onChange={(e)=>setVehicelNumber(e.target.value)}
             id='number'
             name='number'
             className='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
@@ -115,7 +182,8 @@ function Verification() {
           </label>
           <input
             type='text'
-           
+             value={color}
+             onChange={(e)=>setColor(e.target.value)}
             className='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
             placeholder='Your vehicel color'
           />
@@ -135,7 +203,8 @@ function Verification() {
           id='profile-image'
           name='profile-image'
           className='mt-1 w-full border border-gray-300 rounded-md py-2 px-3'
-          onChange={(e) => handleImageChange(e, setProfileImage)}
+          onChange={(e) => handleImage1Change(e, setProfileImage)}
+
         />
         </div>
         <div className='w-40 h-20' >
@@ -161,7 +230,7 @@ function Verification() {
           id='license-image'
           name='license-image'
           className='mt-1 w-full border border-gray-300 rounded-md py-2 px-3'
-          onChange={(e) => handleImageChange(e, setLicenseImage)}
+          onChange={(e) => handleImage2Change(e, setLicenseImage)}
         />
         </div>
         <div className='w-40 h-20'>
@@ -198,7 +267,7 @@ function Verification() {
           type='submit'
           className='w-full bold-navbar mt-8  text-white py-2 px-4 rounded-md  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bold-navbar'
         >
-          Sign Up
+          Create Acount
         </button>
         </div>
     </form>

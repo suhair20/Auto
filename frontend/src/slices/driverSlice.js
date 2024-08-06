@@ -8,13 +8,34 @@ export const driverSlice=createApi({
     baseQuery,
     endpoints:(builder)=>({
         signup:builder.mutation({
-            query:(data)=>({
+            query:(formData)=>({
               url:'/driver/Register',
               method:'POST',
-              body:data  
+              body:formData  
             })
+        }),
+       otp:builder.mutation({
+        query: (data)=>({
+            url:'/driver/verifyotp',
+            method:'POST',
+            body:data
         })
+       }) ,
+       resendotp:builder.mutation({
+        query:(data)=>({
+            url:'/driver/resendotp',
+            method:'POST',
+            body:data
+        })
+       }),
+       verification:builder.mutation({
+        query:(data)=>({
+            url:'/driver/verification',
+            method:'POST',
+            body:data
+        })
+       })
     })
 })
 
-export const {useSignupMutation}=driverSlice
+export const {useSignupMutation,useOtpMutation,useResendotpMutation,useVerificationMutation}=driverSlice

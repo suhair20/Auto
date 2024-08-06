@@ -1,59 +1,24 @@
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: false  // Initially not required
-    },
-    email: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    Experience: {
-        type: Number,
-        default: 0,
-        required: false  
-    },
-    Phone: {
-        type: Number,
-        required: false  
-    },
-    Model: {
-        type: String,
-        required: false  
-    },
-    VehicleNumber: {  
-        type: Number,
-        required: false  
-    },
-    color: {
-        type: String,
-        required: false  
-    },
-    isBlocked: {
-        type: Boolean,
-        default: false
-    },
-    isAdmin: {
-        type: Boolean,
-        default: false
-    },
-    images: [String], 
-    isVerified: {
-        type: Boolean,
-        default: false
-    },
-   
+const driverSchema = new mongoose.Schema({
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    name: { type: String, default: '' },
+    Experience: { type: Number, default: 0 },
+    Phone: { type: String, default: '' }, 
+    Model: { type: String, default: '' },
+    VehicleNumber: { type: String, default: '' },
+    color: { type: String, default: '' },
+    isBlocked: { type: Boolean, default: false },
+    isAdmin: { type: Boolean, default: false },
+    Profileimage: { type: String, default:'' },
+    Licenceimage:{type:String,default:''},
+    isVerified: { type: Boolean, default: false },
+    createdAt: { type: Date, default: Date.now },
+    isFullyRegistered: { type: Boolean, default: false } 
 });
 
-const Driver = mongoose.model('Driver', userSchema);
-export default Driver;
-
-
+export default mongoose.model('Driver', driverSchema);
 
 
 

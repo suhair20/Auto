@@ -1,10 +1,11 @@
 import React from 'react'
 import Header from './Header'
+import Footer from './Footer'
 
 function HomeScreen() {
   return (
     <div>
-   <Header  className="relative z-10" />
+   <Header  className="sticky top-0 z-50 " />
    <div className='full-width h-screen relative'>
   <div className='flex h-full'>
     <div className='mt-11 bottom-5 bg-cover bg-center w-full h-full relative position-relative' style={{ backgroundImage: 'url(./banner2.jpg)' }}>
@@ -24,7 +25,10 @@ function HomeScreen() {
     </div>
   </div>
 </div>
-
+<div className='relative w-full h-screen '>
+    <div className="absolute inset-0 navbar-color opacity-30 z-0  top-5"></div>
+  </div>
+<Footer/>
 </div>
   )
 }

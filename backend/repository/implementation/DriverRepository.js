@@ -27,11 +27,11 @@ class DriverRepository extends UserInterface{
       
     }
 
-    async  updateUserVerificationStatus(email,isVerified){
+    async  updateDriverVerificationStatus(email,isVerified){
         try {
     console.log('nice');
             const Driver= await this.findByemail(email)
-            if(user){
+            if(Driver){
               Driver.isVerified=isVerified
               return await Driver.save();
             }else{
@@ -40,6 +40,18 @@ class DriverRepository extends UserInterface{
             
         } catch (error) {
             console.log(error.message)
+        }
+    }
+
+    async updateDriverdetials(email,details){
+        try {
+          console.log("update driver");
+            const updatedDriver = await DriverModel.findOneAndUpdate({email}, { $set: details }, { new: true });
+            console.log(updatedDriver);
+      return updatedDriver;
+
+        } catch (error) {
+            console.log(error);
         }
     }
 }

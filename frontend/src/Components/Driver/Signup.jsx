@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSignupMutation } from '../../slices/driverSlice'
+import { useSignupMutation,useOtpMutation,useResendotpMutation } from '../../slices/driverSlice'
 import { useNavigate } from 'react-router-dom'
 
 import DriverOtp from './DriverOtp'
@@ -10,8 +10,13 @@ function Signup() {
   const [ConfirmPassword,setConfirmPassword]=useState('')
   const [otpModalOpen, setOtpModalOpen] = useState(false)
   const [error, setError] = useState('')
+  const [otpError,setOtpError]=useState('')
+
+  const navigate = useNavigate()
 
   const[Signup,{isLoading:isSignupLoading}]=useSignupMutation()
+  const[OTP,{isLoading:isOtpLoading}]=useOtpMutation()
+  const [resendOtp,{isLoading:isResendLoading}]=useResendotpMutation()
 
 
   const submithandler=async(e)=>{
@@ -29,11 +34,46 @@ function Signup() {
   }
   }
 
+
+
+  const handleOtpSubmit = async (otp) => {
+    try {
+      console.log('hwloo')
+      const res = await OTP({ email, otp }).unwrap()
+      console.log(res);
+      navigate('/Verification',{state:{email:email}})
+    } catch (error) {
+      console.log(error?.data?.message)
+      if (error?.data && error?.data?.message) {
+        setOtpError(error.data.message)
+      }
+    }
+  }
+
+
+  /*////OTP resend*//////////////////////////////////////////
+
+
+  const handleResendOtp = async () => {
+    try {
+      await resendOtp({ email }).unwrap()
+    } catch (error) {
+      console.log(error?.data?.message)
+      if (error?.data && error?.data?.message) {
+        setOtpError(error.data.message)
+      }
+    }
+  }
+
+
+
+
+
   
   return (
     <>
-  <div className='absolute inset-0 bold-navbar opacity-40 z-0'></div>
-  <div className='h-screen flex flex-col items-center relative z-10 px-4'>
+  <div className='absolute inset-0 navbar-color opacity-30 z-0'></div>
+  <div className='h-screen flex flex-col items-center relative px-4'>
     <div className='text-center mt-28'>
       <h1 className='font-robot-bold text-5xl'>Sign Up</h1>
       <div className='mt-2 flex items-center justify-center text-black'>
@@ -131,8 +171,12 @@ function Signup() {
       </div>
     </div>
     <DriverOtp
+      className="z-0"
       isOpen={otpModalOpen}
       onRequestClose={() => setOtpModalOpen(false)}
+      onSubmit={handleOtpSubmit}
+      onResendOtp={handleResendOtp}
+      error={otpError}
     />
   </div>
 </>

@@ -18,6 +18,10 @@
     background-color:#0c4646e8; /* 45% opacity */
     color: #ffffff; /* White text color */
   }
+  .footer-color {
+    background-color:#0d3d3dd2; /* 45% opacity */
+    color: #ffffff; /* White text color */
+  }
 
   .bold-navbar{
     background-color: #0b3f37;
