@@ -5,7 +5,7 @@ import UserModel from "../../infrastructure/database/model/userModel.js"
 class userRepository extends UserInterface{
  
     async findByUsername(name){
-        console.log("usermodel is hwer");
+        
         return await UserModel.findOne({name})
     }
 
@@ -15,7 +15,7 @@ class userRepository extends UserInterface{
 
     async save(userdata){
         try {
-            console.log("vanu");
+           
             const user= new UserModel(userdata)
 
             return await user.save()
