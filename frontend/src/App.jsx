@@ -6,6 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import store from './slices/Store';
 import { Provider } from 'react-redux';
+import Modal from 'react-modal';
+Modal.setAppElement('#root'); 
 
 const App = () => (
   <>

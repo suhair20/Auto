@@ -4,8 +4,10 @@ import { useDispatch } from 'react-redux';
 import { useSignupMutation, useOtpMutation, useResendotpMutation } from '../../slices/userSlice'
 import OTPModal from './OTPModal';
 import Header from './Header';
+import Modal from 'react-modal';
+import { RiCloseCircleFill } from "react-icons/ri";
 
-function Signup() {
+const Signup = ({isOpen,onRequestClose})=>{
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
@@ -43,6 +45,8 @@ function Signup() {
     try {
       console.log('hwloo')
       const res = await OTP({ email, otp }).unwrap()
+      onRequestClose()
+      
       navigate('/')
     } catch (error) {
       console.log(error?.data?.message)
@@ -65,10 +69,19 @@ function Signup() {
 
   return (
     <>
-    <Header/>
-    <div className="navbar-color h-auto flex items-center justify-center py-24">
+    
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+     contentLabel="Signup Modal"
+      className="fixed inset-0 flex items-center justify-center p-4"
+      overlayClassName="fixed inset-0 bg-black z-50 bg-opacity-50"
+    >
       <div className="bg-white p-6 rounded shadow-md max-w-md w-full">
-        <h1 className="font-robot-bold text-black text-center text-2xl py-4 mb-4">Sign Up</h1>
+      <div className=" text-zinc-500   text-2xl font-bold cursor-pointer" onClick={onRequestClose}>
+      <RiCloseCircleFill />
+        </div>
+        <h1 className="font-robot-bold text-black text-center text-4xl py-4 mb-4">Signup</h1>
         <form onSubmit={submitHandler} className="flex flex-col gap-4 items-center w-full">
           <div className="flex gap-2 w-full">
             <input
@@ -134,7 +147,8 @@ function Signup() {
         onSubmit={handleOtpSubmit}
         error={otpError}
       />
-    </div>
+      </Modal>
+    
     </>
   )
 }

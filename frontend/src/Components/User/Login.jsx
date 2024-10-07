@@ -3,8 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../slices/userSlice'
 import { useDispatch,useSelector } from 'react-redux';
 import { setCredentials } from '../../slices/Auth.slice';
-import Header from './Header';
-function Login() {
+import { RiCloseCircleFill } from "react-icons/ri";
+
+
+import Modal from 'react-modal';
+Modal.setAppElement('#root'); 
+const Login =({isOpen,onRequestClose})=>{
 
 
   const navigate = useNavigate()
@@ -35,8 +39,9 @@ function Login() {
       console.log(res.Token);
       if(res.success){
         dispatch(setCredentials(res.Token)); 
-     
+        onRequestClose()
       navigate('/')
+     
       }
     } catch (error) {
       console.log(error?.data?.message);
@@ -48,23 +53,34 @@ function Login() {
 
   return (
     <>
-    <Header />
-    <div className='navbar-color h-screen flex items-center justify-center'>
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      shouldCloseOnOverlayClick={true}
+     contentLabel="Login Modal"
+      className="fixed inset-0 flex items-center z-50 justify-center p-4"
+      overlayClassName="fixed inset-0 bg-black z-50 bg-opacity-50"
+    >
+    
       <div className='bg-white p-6 rounded shadow-md max-w-md w-full'>
-        <p className='font-robot-bold text-black text-center text-2xl py-4'>Login</p>
+      <div className=" text-zinc-500   text-2xl font-bold cursor-pointer" onClick={onRequestClose}>
+      <RiCloseCircleFill />
+        </div>
+        <p className=' font-playball top-4 text-black text-center text-5xl py-8 -mt-8'>Auto</p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 items-center w-full">
           <input
             type="text"
             value={email}
+          
             onChange={(e) => setEmail(e.target.value)}
-            className="p-2 border w-full border-gray-300 rounded text-xs"
+            className="p-3 border w-full border-black rounded "
             placeholder="Enter your email "
           />
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="p-2 border w-full border-gray-300 rounded text-xs"
+            className="p-3 border  w-full border-black rounded "
             placeholder="Enter Password"
           />
           {error && (
@@ -74,11 +90,11 @@ function Login() {
           )}
           <button
             type="submit"
-            className="w-full bold-navbar text-white rounded py-2 text-xs"
+            className="w-full p-3 bold-navbar text-white rounded  "
           >
             Login
           </button>
-          <div className='flex gap-2 mt-4 text-xs'>
+          <div className='flex gap-2 mt-4 '>
             <p>Not a member?</p>
             <button
               onClick={() => navigate('/signup')}
@@ -86,10 +102,12 @@ function Login() {
             >
               Sign up
             </button>
+           
           </div>
         </form>
       </div>
-    </div>
+    
+    </Modal>
     </>
   )
 }

@@ -32,3 +32,7 @@
   width: 100vw; /* 100% of the viewport width */
   height: 500px;
 }
+.mix-color{
+  background-color: rgba(31, 41, 55, 0.7);
+  color: white;
+}

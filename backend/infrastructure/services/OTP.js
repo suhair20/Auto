@@ -12,7 +12,7 @@ class OTP {
             }
         });
 
-        this.redisClient.on('error', (err) => console.error('Redis Client Error', err));
+        this.redisClient.on('error', (err) => console.error('Redis sushu Client Error', err));
         this.redisClient.connect();
     }
 

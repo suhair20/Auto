@@ -1,20 +1,48 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState,useEffect,useRef } from 'react'
 import Header from './Header'
 import { Button } from "react-bootstrap";
+import { useNavigate } from 'react-router-dom';
 import './User.css';
 import Footer from './Footer'
 import axios from 'axios';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import mapboxgl from 'mapbox-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+import { FaMapLocation } from "react-icons/fa6";
+import { IoLocationSharp } from "react-icons/io5";
+
+
+
+import {Modal } from "react-bootstrap"
+import { accessToken } from 'mapbox-gl';
+import { Link } from 'react-router-dom';
 
 
 
 
 
-
+mapboxgl.accessToken = 'pk.eyJ1IjoibW9pZGhlZW5zdWhhaXIiLCJhIjoiY2x6YjF1cWNyMGJlMjJyb29hZ240Zmk4ayJ9.58Mg37vr5SeKrBWZtAQ2xQ'
 
 function HomeScreen() {
 
+
+  const Navigate =useNavigate()
   const [query, setQuery] = useState('');
+  const [DestinationQuery,setDestinationQuery]=useState('')
   const [suggestions,setSuggestions]=useState()
+  const [DestinationSuggestion,setDestinationSuggestion]=useState()
+  const [showSuggestion, setShowSuggestion] = useState(false);
+  const [showDestinationSuggestion,setshowDestinationSuggestion]=useState(false)
+  const [showMapModal, setShowMapModal] = useState(false);
+  const [location, setLocation] = useState(null);
+  const [Destinationlocation,setDestinationlocation]=useState(false)
+  const [IsDestinationselection,setIsDestinationselection]=useState(false)
+  const [ErrorMessage,setErrorMessage]=useState('')
+  const mapContainerRef = useRef(null);
+  const map = useRef(null)
+  const userMarker = useRef(null);
+  const selectedMarker=useRef(null)
 
 
   useEffect(() => {
@@ -23,11 +51,16 @@ function HomeScreen() {
         try {
           const response = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json`, {
             params: {
-              access_token: 'pk.eyJ1IjoibW9pZGhlZW5zdWhhaXIiLCJhIjoiY2x6YjF1cWNyMGJlMjJyb29hZ240Zmk4ayJ9.58Mg37vr5SeKrBWZtAQ2xQ'
+             
+              access_token: mapboxgl.accessToken,
+               
+
             }
           });
-          
+
           setSuggestions(response.data.features.map(feature => feature.place_name));
+          
+         
         } catch (error) {
           console.error('Error fetching suggestions:', error);
         }
@@ -40,9 +73,42 @@ function HomeScreen() {
   }, [query]);
 
 
+
+
+  useEffect(() => {
+    if (DestinationQuery.length > 2) {
+      const fetchDestinationSuggestions = async () => {
+        try {
+          const response = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(DestinationQuery)}.json`, {
+            params: { access_token: mapboxgl.accessToken }
+          });
+          setDestinationSuggestion(response.data.features.map(feature => feature.place_name));
+        } catch (error) {
+          console.error('Error fetching destination suggestions:', error);
+        }
+      };
+      fetchDestinationSuggestions();
+    } else {
+      setDestinationSuggestion([]);
+    }
+  }, [DestinationQuery]);
+
+
+  useEffect(() => {
+    if (map.current) {
+      map.current.resize(); // Trigger map resize to ensure correct positioning
+    }
+  }, [showMapModal]);
+  
+
+
   const handleInputChange = (e) => {
     setQuery(e.target.value);
   };
+
+  const handleDestinationInputChange=(e)=>{
+    setDestinationQuery(e.target.value)
+  }
 
 
   const handleSuggestionClick = (suggestion) => {
@@ -50,7 +116,181 @@ function HomeScreen() {
     setSuggestions([]);
   };
 
+  const handleInputBlur = () => {
+    
+    setTimeout(() => setShowSuggestion(false), 100); 
+  };
 
+  const handledestinationInputBlur = () => {
+    
+    setTimeout(() => setshowDestinationSuggestion(false), 100); 
+  };
+
+
+
+
+  const handleInputFocus = () => {
+    setShowSuggestion(true);
+    setshowDestinationSuggestion(false)
+  };
+
+
+  const handleSuggestion2Click = (isDestination=false) => {
+    setIsDestinationselection(isDestination);
+    setShowSuggestion(false);
+    setshowDestinationSuggestion(false);
+    setShowMapModal(true);
+    
+  };
+
+  const handleCloseMapModal = () => {
+    setShowMapModal(false);
+  };
+
+  const handledestinationSuggestionClick=(suggestion)=>{
+    setDestinationQuery(suggestion); 
+    setDestinationSuggestion([]);
+  }
+  
+
+
+  useEffect(() => {
+
+    if (showMapModal) {
+      if (map.current) {
+        map.current.remove(); // Remove any existing map instance
+      }
+      map.current = new mapboxgl.Map({
+        container: mapContainerRef.current,
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [75.0017, 12.4996], // Default center, you can change this
+        zoom: 12,
+      });
+
+      map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+      const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+        marker: true , // Do not add default marker
+      });
+      map.current.addControl(geocoder, 'top-left');
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            const userLocation = [longitude, latitude];
+             
+            map.current.flyTo({
+              center: userLocation,
+              zoom: 14,
+              essential: true, // This ensures that the transition is smooth and user-friendly
+            });
+  
+            // Add a custom marker at the user's location
+            if (userMarker.current) {
+              userMarker.current.remove();
+            }
+            userMarker.current = new mapboxgl.Marker({ color: 'red' })
+              .setLngLat(userLocation)
+              .addTo(map.current);
+
+
+              if (IsDestinationselection) {
+                setDestinationlocation(userLocation); // Set destination location
+              } else {
+                setLocation(userLocation); // Set current location
+              }
+          },
+         
+          (error) => {
+            console.error('Error getting user location:', error);
+          },
+          { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        );
+      } else {
+        console.error('Geolocation is not supported by this browser.');
+      }
+
+      map.current.on('click',(event)=>{
+        
+        const {lng,lat}= event.lngLat
+        const selectedlocation=[lng,lat]
+        console.log(selectedlocation);
+        
+        
+        if (IsDestinationselection) {
+          setDestinationlocation(selectedlocation); // Set destination location
+        } else {
+          setLocation(selectedlocation); // Set current location
+        }
+        
+        if (selectedMarker.current){
+         
+          selectedMarker.current.remove()
+        }
+       
+
+        selectedMarker.current=new mapboxgl.Marker()
+          .setLngLat(selectedlocation)
+          .addTo(map.current)
+
+      })
+
+
+    }
+  }, [showMapModal]);
+
+const handleConfirmlocation=async()=>{
+ 
+  const loc=IsDestinationselection?Destinationlocation:location
+
+  if(loc&& loc.length==2){
+    try {
+      const response = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${loc[0]},${loc[1]}.json`,{
+        params: {
+          access_token: mapboxgl.accessToken,
+        },
+      });
+
+      if(response.data.features.length>0){
+        const placeName=response.data.features[0].place_name
+        console.log(placeName);
+        
+        if (placeName) {
+          if (IsDestinationselection) {
+            setDestinationQuery(placeName); // Set destination query
+          } else {
+            setQuery(placeName); // Set current location query
+          }
+        }
+      }
+      
+    } catch (error) {
+      console.error('Error fetching place name:', error);
+    }
+  }else{
+    console.error('Location is undefined or invalid');
+  }
+  setShowMapModal(false)
+  setshowDestinationSuggestion(false)
+  setShowSuggestion(false)
+}
+
+const handleStart=(e)=>{
+  e.preventDefault( )
+  try {
+    if(!query&& !DestinationQuery){
+      setErrorMessage('Please select both the location and destination.');
+    }else{
+      setErrorMessage('')
+      Navigate('/booking')
+    }
+  } catch (error) {
+    
+  }
+}
 
 
 
@@ -60,63 +300,123 @@ function HomeScreen() {
 
   return (
     <>
-      <Header />
+      
       <div 
-        className='footer-color full-width' 
+        className='footer-color h-[80vh]   relative position-relative  items-center justify-center ' 
         style={{ backgroundImage: 'url("./banner2.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
-        <div className='flex'>
-          <div className='ml-32 py-28 bottom-5'>
-            <div className='text-center mr-20 py-2'>
-              <h1 className='font-passion text-white text-3xl md:text-6xl'>Trust us to take</h1>
-              <h1 className='font-passion md:text-6xl mr-4 text-white'>You there</h1>
-            </div>
-            <div className="h-12 flex-col items-center justify-between px-4 sm:px-8 lg:px-32">
-              <p className="text-black ml-10 text-sm">Hop in, Let's Go!</p>
-              <form className="mr-32 flex flex-col md:gap-4 items-center">
+        <div className=" absolute inset-0 bg-black opacity-90 z-0"></div>
+        <div className=' fixed-top  ml-15 z-10 lg:ml-16 sm:w-11/12 py-6  md:w-11/12 items-center justify-center animate-slide-down  '  >
+          <Header  />
+          </div>
+        <div  className=' '>
+         
+          <div className=' py-56 bottom-8' >
+         
+          <div className='relative text-center  py-2'>
+  <h1 className='font-passion text-white text-3xl sm:text-2xl md:text-5xl lg:text-6xl bg-transparent'>trust us to</h1>
+  <h1 className='font-passion text-white text-3xl sm:text-2xl md:text-5xl lg:text-6xl bg-transparent'>Take you there</h1>
+</div>
+
+            <div className=  " relative h-12 flex-col items-center justify-between px-4 sm:px-8 lg:px-32">
+
+              <form className=" mr-10 flex flex-col gap-3 md:gap-4 h-[500px] items-center"  onSubmit={handleStart} >
+              <div className="  text-navbar-color items-end  text-sm">Hop in, Let's Go!</div>
                 <input
                   type="text"
                   value={query}
+                  onFocus={handleInputFocus}
+                 onBlur={handleInputBlur}
                   onChange={handleInputChange}
-                  className="p-1 border ml-14 w-100 text-black border-navbar-color rounded"
+                  className=" p-2 sm:p-1  ml-14 md:w-[500px] text-white  rounded bg-transparent border border-navbar-color  sm:w-1/2  "
                   placeholder="Enter Location"
                 />
-                {suggestions && suggestions.length > 0 && (
-                  <ul className="suggestions-list">
-                    {suggestions.map((suggestion, index) => (
-                      <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
-                        {suggestion}
-                      </li>
+                 {showSuggestion && (
+        <div
+          id="suggestionBox"
+          className="absolute  border w-[500px] ml-14 rounded  bg-white  p-6  mt-20 felx items-center "
+        >
+          <p className=" text-black cursor-pointer  rounded font-robot-bold flex items-center "  onMouseDown={()=>handleSuggestion2Click(false)}>
+          <FaMapLocation className='mr-2 text-2xl' /><div className='ml-2' > Set Location on Map</div>
+          </p>
+          {suggestions.map((suggestion, index) => (
+                      <p
+                        key={index}
+                        className="text-black rounded border cursor-pointer border-black-300 hover:bg-gray-100 flex items-center"
+                        onMouseDown={() => handleSuggestionClick(suggestion)}
+                      >
+                       <IoLocationSharp className='mr-2 text-1xl' /> 
+                       <div className="ml-2 flex-1 truncate">{suggestion}</div>
+                      </p>
                     ))}
-                  </ul>
-                )}
+         
+        </div>
+      )}
+                
                 <input
-                  type="text"
-                  className="p-1 ml-14 w-100 border border-blue-950 rounded"
-                  placeholder="Enter Destination"
+                   type="text"
+                   value={DestinationQuery}
+                   onFocus={()=>setshowDestinationSuggestion(true)}
+                  onBlur={handledestinationInputBlur}
+                   onChange={handleDestinationInputChange}
+                   className=" p-2 lg:p-2  ml-14 md:w-[500px] text-black bg-transparent border rounded"
+                   placeholder="Enter Destination"
                 />
+                {showDestinationSuggestion&&(
+                   <div
+                   id="suggestionBox"
+                   className="absolute bg-white rounded  w-[500px] ml-14  gap-4  p-6   "
+                   style={{marginTop:'139px'}}
+                 >
+                   <div className=" text-black cursor-pointer rounded font-robot-bold  flex items-center "  onMouseDown={()=>handleSuggestion2Click(true)}>
+                   <FaMapLocation className='mr-2 text-2xl' /><div className='ml-2' > Set Location on Map</div>
+          </div>
+
+          {DestinationSuggestion.map((suggestion, index) => (
+                      <div
+                        key={index}
+                        className="text-white rounded border cursor-pointer border-black-300 hover:bg-gray-100 flex items-center "style={{top:'150px'}}
+                        onMouseDown={() => handledestinationSuggestionClick(suggestion)}
+                      >
+                       <IoLocationSharp className='mr-2 text-1xl' /> 
+                       <div className="ml-2 flex-1 truncate  ">{suggestion}</div>
+                      </div>
+                    ))}
+         
+        </div>
+                )}
+               
                 <button
                   type="submit"
-                  className="p-1 font-robot-bold mr-36 border-0 text-white navbar-color rounded px-4"
+                  className=" p-1 font-robot-bold ml-10 border-0 text-white navbar-color rounded px-4"
                 >
                   Start
                 </button>
+               
               </form>
             </div>
           </div>
+          
           <div>
-            <div className="w-full h-full flex items-center py-4 ml-10 justify-center">
-              <img
-                src="/banner.png"
-                alt="Banner"
-                className="max-w-full max-h-full object-contain"
-              />
-            </div>
+           
           </div>
         </div>
       </div>
-      <div className='pt-20'>
+      <div className=''>
         <Footer className='' />
+        <Modal show={showMapModal} onHide={handleCloseMapModal} size="lg" centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Set Location on Map</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div ref={mapContainerRef} className="map-container" style={{height:'300px'}}  />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button className='navbar-color rounded' onClick={handleConfirmlocation}>
+            confirm location
+          </Button>
+        </Modal.Footer>
+      </Modal>
       </div>
     </>
   );
