@@ -1,19 +1,16 @@
 import { createClient } from 'redis';
+import { Redis } from '@upstash/redis';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 
 class OTP {
     constructor() {
-        this.redisClient = createClient({
-            password: 'urjN1xJSNPPdBhNaLxPOSYeTXwZ8flgV',
-            socket: {
-                host: 'redis-14647.c301.ap-south-1-1.ec2.redns.redis-cloud.com',
-                port: 14647
-            }
+        this.redisClient = new Redis({
+            url: 'https://full-oriole-29135.upstash.io', // Replace with your Upstash Redis URL
+            token: 'AXHPAAIjcDFlOGM1N2U4ZjQ1M2E0YTJkODUwNWM5Y2U2NWI4MGY1ZnAxMA', // Replace with your Upstash token
         });
 
-        this.redisClient.on('error', (err) => console.error('Redis sushu Client Error', err));
-        this.redisClient.connect();
+       
     }
 
     generateOtp() {
@@ -23,9 +20,11 @@ class OTP {
     async sendOtp(email) {
         try {
             const otp = this.generateOtp();
+            console.log("otpp");
+            
 
             // Store OTP in Redis with an expiration time of 60 seconds
-            await this.redisClient.set(email, otp, 'EX', 60);
+            await this.redisClient.set(`otp:${email}`, otp, { ex: 60 });
 
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
@@ -41,8 +40,10 @@ class OTP {
                 subject: 'Your OTP',
                 text: `Your OTP code is ${otp}`,
             };
+            console.log(mailOptions);
+            
 
-            await transporter.sendMail(mailOptions);
+           return await transporter.sendMail(mailOptions);
         } catch (error) {
             console.error("Error sending OTP:", error);
             throw new Error("Failed to send OTP. Please try again later.");

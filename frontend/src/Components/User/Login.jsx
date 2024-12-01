@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../slices/userSlice'
 import { useDispatch,useSelector } from 'react-redux';
 import { setCredentials } from '../../slices/Auth.slice';
-import { RiCloseCircleFill } from "react-icons/ri";
+import { IoClose } from "react-icons/io5";
 
 
 import Modal from 'react-modal';
@@ -63,24 +63,27 @@ const Login =({isOpen,onRequestClose})=>{
     >
     
       <div className='bg-white p-6 rounded shadow-md max-w-md w-full'>
-      <div className=" text-zinc-500   text-2xl font-bold cursor-pointer" onClick={onRequestClose}>
-      <RiCloseCircleFill />
+      <div className="   text-black text-2xl font-bold cursor-pointer" onClick={onRequestClose}>
+      <IoClose />
         </div>
-        <p className=' font-playball top-4 text-black text-center text-5xl py-8 -mt-8'>Auto</p>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 items-center w-full">
+        <p className=' font-robot-bold top-4 text-black text-center uppercase text-2xl  '>Login</p>
+        <div className=' flex flex-col items-center mt-8' >
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-full">
+        <label className=' text-black text-xs font-robot-bold mr-8  uppercase  '>email</label>
           <input
             type="text"
             value={email}
           
             onChange={(e) => setEmail(e.target.value)}
-            className="p-3 border w-full border-black rounded "
+            className="p-2 border-1 w-full border-gray-500 rounded "
             placeholder="Enter your email "
           />
+          <label className=' text-black text-xs font-robot-bold mr-8  uppercase  '>password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="p-3 border  w-full border-black rounded "
+             className="p-2 w-full rounded border-1 border-gray-500"
             placeholder="Enter Password"
           />
           {error && (
@@ -90,10 +93,11 @@ const Login =({isOpen,onRequestClose})=>{
           )}
           <button
             type="submit"
-            className="w-full p-3 bold-navbar text-white rounded  "
+            className="w-full p-3 uppercase bold-navbar text-white rounded  "
           >
             Login
           </button>
+          </form>
           <div className='flex gap-2 mt-4 '>
             <p>Not a member?</p>
             <button
@@ -104,7 +108,8 @@ const Login =({isOpen,onRequestClose})=>{
             </button>
            
           </div>
-        </form>
+        
+        </div>
       </div>
     
     </Modal>

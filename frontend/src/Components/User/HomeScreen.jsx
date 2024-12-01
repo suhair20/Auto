@@ -314,8 +314,8 @@ const handleStart=(e)=>{
           <div className=' py-56 bottom-8' >
          
           <div className='relative text-center  py-2'>
-  <h1 className='font-passion text-white text-3xl sm:text-2xl md:text-5xl lg:text-6xl bg-transparent'>trust us to</h1>
-  <h1 className='font-passion text-white text-3xl sm:text-2xl md:text-5xl lg:text-6xl bg-transparent'>Take you there</h1>
+  <h1 className='font-passion text-white text-3xl sm:text-2xl md:text-5xl lg:text-6xl uppercase bg-transparent'>trust us to</h1>
+  <h1 className='font-passion text-white text-3xl sm:text-2xl md:text-5xl lg:text-6xl uppercase bg-transparent'>Take you there</h1>
 </div>
 
             <div className=  " relative h-12 flex-col items-center justify-between px-4 sm:px-8 lg:px-32">
@@ -388,7 +388,7 @@ const handleStart=(e)=>{
                
                 <button
                   type="submit"
-                  className=" p-1 font-robot-bold ml-10 border-0 text-white navbar-color rounded px-4"
+                  className=" p-1 font-robot-bold ml-10 border-0 uppercase text-white navbar-color rounded px-4"
                 >
                   Start
                 </button>

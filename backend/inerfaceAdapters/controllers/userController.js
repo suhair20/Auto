@@ -32,9 +32,11 @@ class UserController {
     signup = async (req, res,next) => {
         try {
             const { name, password,email } = req.body;
-            console.log(password,"pass");
+           
             const user = await this.signupUser.execute(name,password,email)
             await this.otpService.sendOtp(email)
+            console.log(user);
+            
         
             res.status(201).json({ success: true, user });
         } catch (error) {

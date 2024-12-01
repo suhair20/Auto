@@ -24,22 +24,35 @@ const Signup = ({isOpen,onRequestClose})=>{
   const [resendOtp, { isLoading: isResendLoading }] = useResendotpMutation()
 
   const submitHandler = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (password !== confirmPassword) {
-      setError('Passwords do not match')
-      return
+      setError('Passwords do not match');
+      return;
     }
     try {
-      const res = await signup({ name, email, password }).unwrap()
-      console.log(res)
-      setOtpModalOpen(true)
+      console.log("jiii");
+      
+      const response = await signup({ name, email, password }).unwrap();
+      
+      console.log('Response from signup:', response); // Log the entire response
+      
+      if (response && response.success) {
+        onRequestClose();
+        setOtpModalOpen(true);  
+      } else {
+        console.log('Signup was not successful:', response); // Log if the response does not indicate success
+      }
+      
     } catch (error) {
-      console.log(error?.data?.message)
+      console.error('Error during signup:', error); // Log the error for debugging
       if (error?.data && error?.data?.message) {
-        setError(error.data.message)
+        setError(error.data.message);
+      } else {
+        setError('An unexpected error occurred'); // Handle unexpected errors
       }
     }
   }
+  
 
   const handleOtpSubmit = async (otp) => {
     try {
@@ -81,21 +94,21 @@ const Signup = ({isOpen,onRequestClose})=>{
       <div className=" text-zinc-500   text-2xl font-bold cursor-pointer" onClick={onRequestClose}>
       <RiCloseCircleFill />
         </div>
-        <h1 className="font-robot-bold text-black text-center text-4xl py-4 mb-4">Signup</h1>
+        <h1 className="font-robot-bold text-black text-center  uppercase text-2xl py-4 mb-4">create an account</h1>
         <form onSubmit={submitHandler} className="flex flex-col gap-4 items-center w-full">
           <div className="flex gap-2 w-full">
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="p-2 border w-full border-gray-300 rounded"
+              className="p-2 border-1 w-full border-gray-500 rounded"
               placeholder="Enter your name"
             />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="p-2 border w-full border-gray-300 rounded"
+              className="p-2 border-1 w-full border-gray-500 rounded"
               placeholder="Enter your email"
             />
           </div>
@@ -104,14 +117,14 @@ const Signup = ({isOpen,onRequestClose})=>{
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="p-2 border w-full border-gray-300 rounded"
+              className="p-2 border-1 w-full border-gray-500 rounded"
               placeholder="Enter password"
             />
             <input
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="p-2 border w-full border-gray-300 rounded"
+              className="p-2 border-1  w-full border-gray-500 rounded"
               placeholder="Confirm password"
             />
           </div>
@@ -122,7 +135,7 @@ const Signup = ({isOpen,onRequestClose})=>{
           )}
           <button
             type="submit"
-            className="w-full bold-navbar text-white rounded py-2 mt-4"
+            className="w-full bold-navbar uppercase text-white rounded p-3 "
           >
             Continue
           </button>
@@ -140,6 +153,8 @@ const Signup = ({isOpen,onRequestClose})=>{
           Continue with Google
         </button>
       </div>
+      
+      </Modal>
       <OTPModal
         isOpen={otpModalOpen}
         onRequestClose={() => setOtpModalOpen(false)}
@@ -147,7 +162,6 @@ const Signup = ({isOpen,onRequestClose})=>{
         onSubmit={handleOtpSubmit}
         error={otpError}
       />
-      </Modal>
     
     </>
   )

@@ -4,12 +4,16 @@ import { createBrowserRouter, createRoutesFromElements, Route } from 'react-rout
 import App from '../App'
 import UserRoutes from './UserRoutes'
 import DriverRoutes from './DriverRoutes';
+import AdminRoutes from './AdminRoutes';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+       {AdminRoutes}
       {UserRoutes}
       {DriverRoutes}
+     
+
     </Route>
   )
 );
