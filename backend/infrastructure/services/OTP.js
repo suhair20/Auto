@@ -20,7 +20,7 @@ class OTP {
     async sendOtp(email) {
         try {
             const otp = this.generateOtp();
-           console.log('oyyy')
+           console.log('oyy')
             
 
             // Store OTP in Redis with an expiration time of 60 seconds
