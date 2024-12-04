@@ -6,8 +6,8 @@ import crypto from 'crypto';
 class OTP {
     constructor() {
         this.redisClient = new Redis({
-            url: 'https://full-oriole-29135.upstash.io', // Replace with your Upstash Redis URL
-            token: 'AXHPAAIjcDFlOGM1N2U4ZjQ1M2E0YTJkODUwNWM5Y2U2NWI4MGY1ZnAxMA', // Replace with your Upstash token
+            url: 'https://hip-ringtail-24466.upstash.io', // Replace with your Upstash Redis URL
+            token: 'AV-SAAIjcDFiMzk2Yjk0ZTZkZDE0OWViYWExYzlmMzQ4NWUyNDAwZXAxMA', // Replace with your Upstash token
         });
 
        
@@ -30,7 +30,7 @@ class OTP {
                 service: 'gmail',
                 auth: {
                     user: 'moidheensuhair@gmail.com',
-                    pass: 'desz uraw ownd exio',
+                    pass: 'sbwa aclw cgyg lczb',
                 },
             });
 
@@ -52,12 +52,18 @@ class OTP {
 
     async verifyOtp(email, otp) {
         try {
-            const storedOtp = await this.redisClient.get(email);
+            const storedOtp = await this.redisClient.get(`otp:${email}`);
+            console.log(storedOtp,"hrllk");
+            
             if (!storedOtp) {
                 throw new Error("OTP has expired.");
             }
             console.log(`Stored OTP: ${storedOtp}`);
-            return storedOtp === otp;
+            // Check their types
+
+            const Ismatch =storedOtp == otp;
+            return Ismatch
+            
         } catch (error) {
             console.error("Error verifying OTP:", error);
             throw new Error("Failed to verify OTP. Please try again later.");

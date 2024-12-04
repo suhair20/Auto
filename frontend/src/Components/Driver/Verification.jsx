@@ -47,7 +47,7 @@ const handelSubmit=async(e)=>{
   try {
     const res=await Verification(formData).unwrap()
    console.log("come");
-    navigate('/dashboard')
+    navigate('/login')
     
   } catch (error) {
     console.log(error);

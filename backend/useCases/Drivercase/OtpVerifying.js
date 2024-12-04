@@ -10,6 +10,8 @@ class Otpverifying{
     async excute(email,otp){
         console.log('welcome');
         const isValidOtp= await this.otpService.verifyOtp(email,otp)
+        console.log(isValidOtp,"heoo");
+        
      if(!isValidOtp){
         throw new Error('Invalid OTP')
      }
