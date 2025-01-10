@@ -65,7 +65,7 @@ function rideHistory() {
             <li> 
             <Link to={'/ridehistory'} >
                <button
-                   className="flex items-center  w-full text-left bg-gray-700 rounded-lg"
+                   className="flex items-center p-2 w-full text-left bg-gray-700 rounded-lg"
                >
                    <FaHistory className="mr-3 text-2xl" />
                    {isOpen && <span className="origin-left duration-200">Ride History</span>}
