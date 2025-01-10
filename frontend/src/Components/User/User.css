@@ -14,8 +14,14 @@
   src: url("./assets/Passion_One.zip");
 
 }
-.navbar-color {
+/* .navbar-color {
     background-color:#1f2937; /* 45% opacity */
+    /* color: #ffffff; /* White text color */
+  /* } */ */
+
+ 
+  .navbar-color {
+    background-color:#0fe2a3;; /* 45% opacity */
     color: #ffffff; /* White text color */
   }
   .footer-color {

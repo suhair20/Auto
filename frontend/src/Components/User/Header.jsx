@@ -48,8 +48,8 @@ function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-0 bg-navbar-color rounded">
-    <div className="navbar-color h-14 flex justify-between sm:justify-end items-center sm:px-4 md:px-4 rounded">
+    <header className="sticky top-0 z-0  md:rounded">
+    <div className=" navbar-color h-14 flex justify-between sm:justify-end items-center sm:px-4 md:px-4 md:rounded">
       <div className="   font-playball sm:absolute left-0 right-0 sm:mx-auto w-1/4">
         Auto
       </div>
@@ -75,36 +75,36 @@ function Header() {
 
       )}
         <div
-      className={`absolute bg-white left-0 top-full w-full items-center px-5 ${isMenuOpen ? "min-h-[35vh]" : "md:min-h-fit"}  `}
+      className={`absolute  bg-white left-0 top-full  w-full items-center  ${isMenuOpen ? "min-h-[35vh]" : "md:min-h-fit"}  `}
       style={{ top: 'calc(100% + 0px)' }}  // Adjust to position below the header
     >
       <MdOutlineMenu
         onClick={onToggleMenu}
-        className="text-3xl cursor-pointer md:hidden"
+        className=" cursor-pointer md:hidden"
       />
       <ul
-        className={`flex flex-col md:flex-row items-center ml-10 gap-[7vw] ${isMenuOpen ? "block" : "hidden"} md:flex`}
+        className={`flex flex-col px-3 md:flex-row items-center  gap-[7vw] ${isMenuOpen ? "block" : "hidden"} md:flex`}
       >
         <li>
-          <a href="#" className=" text-black">
+          <a href="#" className=" font-passion    ">
             Home
           </a>
         </li>
         <li>
           <Link to={'/driver'} >
-          <a  className="text-black">
+          <a  className=" font-passion rounded ">
             Driver
           </a>
           </Link>
         </li>
         <li>
-          <a  className="text-black">
+          <a  className=" font-passion ">
           
             Ride
           </a>
         </li>
         <li>
-          <a  className="text-black">
+          <a  className=" font-passion ">
           
             About
           </a>

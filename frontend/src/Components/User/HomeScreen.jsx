@@ -302,11 +302,11 @@ const handleStart=(e)=>{
     <>
       
       <div 
-        className='footer-color h-[80vh]   relative position-relative  items-center justify-center ' 
+        className='footer-color h-[90vh]   relative position-relative  items-center justify-center ' 
         style={{ backgroundImage: 'url("./banner2.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
-        <div className=" absolute inset-0 bg-black opacity-90 z-0"></div>
-        <div className=' fixed-top  ml-15 z-10 lg:ml-16 sm:w-11/12 py-6  md:w-11/12 items-center justify-center animate-slide-down  '  >
+        <div className=" absolute inset-0 bg-black opacity-80 z-0"></div>
+        <div className=' fixed-top  ml-15 z-10 lg:ml-16 sm:w-11/12   md:w-11/12 md:py-6 items-center justify-center animate-slide-down  '  >
           <Header  />
           </div>
         <div  className=' '>
@@ -314,27 +314,30 @@ const handleStart=(e)=>{
           <div className=' py-56 bottom-8' >
          
           <div className='relative text-center  py-2'>
-  <h1 className='font-passion text-white text-3xl sm:text-2xl md:text-5xl lg:text-6xl uppercase bg-transparent'>trust us to</h1>
-  <h1 className='font-passion text-white text-3xl sm:text-2xl md:text-5xl lg:text-6xl uppercase bg-transparent'>Take you there</h1>
+  <h1 className='font-passion  bg-transparent text-3xl sm:text-2xl md:text-5xl lg:text-6xl uppercase '>trust us to</h1>
+  <h1 className='font-passion navbar-color text-3xl sm:text-2xl md:text-5xl lg:text-6xl uppercase bg-transparent'>Take you there</h1>
 </div>
 
-            <div className=  " relative h-12 flex-col items-center justify-between px-4 sm:px-8 lg:px-32">
+            <div className=  " relative  flex-col items-center justify-between px-4 sm:px-8 lg:px-32">
 
-              <form className=" mr-10 flex flex-col gap-3 md:gap-4 h-[500px] items-center"  onSubmit={handleStart} >
-              <div className="  text-navbar-color items-end  text-sm">Hop in, Let's Go!</div>
+              <form className="  flex flex-col  items-center"  onSubmit={handleStart} >
+              <div className="    text-navbar-color items-end  text-sm">
+                <p>Hop in, Let's Go!</p>
+              </div>
+              <div  className=' flex flex-col  gap-3 md:gap-4 w-full items-center ' >
                 <input
                   type="text"
                   value={query}
                   onFocus={handleInputFocus}
                  onBlur={handleInputBlur}
                   onChange={handleInputChange}
-                  className=" p-2 sm:p-1  ml-14 md:w-[500px] text-white  rounded bg-transparent border border-navbar-color  sm:w-1/2  "
+                  className=" p-2   md:w-[500px] sm:w-2/3 w-full  text-white  rounded bg-transparent border     "
                   placeholder="Enter Location"
                 />
                  {showSuggestion && (
         <div
           id="suggestionBox"
-          className="absolute  border w-[500px] ml-14 rounded  bg-white  p-6  mt-20 felx items-center "
+          className="absolute  border md:w-[500px] w-[327px]  rounded  bg-white  p-6  mt-[43px] felx items-center "
         >
           <p className=" text-black cursor-pointer  rounded font-robot-bold flex items-center "  onMouseDown={()=>handleSuggestion2Click(false)}>
           <FaMapLocation className='mr-2 text-2xl' /><div className='ml-2' > Set Location on Map</div>
@@ -359,14 +362,14 @@ const handleStart=(e)=>{
                    onFocus={()=>setshowDestinationSuggestion(true)}
                   onBlur={handledestinationInputBlur}
                    onChange={handleDestinationInputChange}
-                   className=" p-2 lg:p-2  ml-14 md:w-[500px] text-black bg-transparent border rounded"
+                   className=" p-2 lg:p-2   md:w-[500px] w-full text-white bg-transparent border rounded   "
                    placeholder="Enter Destination"
                 />
                 {showDestinationSuggestion&&(
                    <div
                    id="suggestionBox"
-                   className="absolute bg-white rounded  w-[500px] ml-14  gap-4  p-6   "
-                   style={{marginTop:'139px'}}
+                   className="absolute bg-white rounded  md:w-[500px] w-[325px] mt-[101px] gap-4  p-6   "
+                  
                  >
                    <div className=" text-black cursor-pointer rounded font-robot-bold  flex items-center "  onMouseDown={()=>handleSuggestion2Click(true)}>
                    <FaMapLocation className='mr-2 text-2xl' /><div className='ml-2' > Set Location on Map</div>
@@ -375,7 +378,7 @@ const handleStart=(e)=>{
           {DestinationSuggestion.map((suggestion, index) => (
                       <div
                         key={index}
-                        className="text-white rounded border cursor-pointer border-black-300 hover:bg-gray-100 flex items-center "style={{top:'150px'}}
+                        className="text-black rounded border cursor-pointer border-black-300 hover:bg-gray-100 flex items-center "style={{top:'150px'}}
                         onMouseDown={() => handledestinationSuggestionClick(suggestion)}
                       >
                        <IoLocationSharp className='mr-2 text-1xl' /> 
@@ -385,10 +388,10 @@ const handleStart=(e)=>{
          
         </div>
                 )}
-               
+                </div>
                 <button
                   type="submit"
-                  className=" p-1 font-robot-bold ml-10 border-0 uppercase text-white navbar-color rounded px-4"
+                  className=" mt-2 p-1 font-robot-bold   border-0 uppercase text-white navbar-color rounded px-4"
                 >
                   Start
                 </button>
@@ -401,9 +404,12 @@ const handleStart=(e)=>{
            
           </div>
         </div>
+       
       </div>
+    
+
       <div className=''>
-        <Footer className='' />
+        
         <Modal show={showMapModal} onHide={handleCloseMapModal} size="lg" centered>
         <Modal.Header closeButton>
           <Modal.Title>Set Location on Map</Modal.Title>
@@ -418,6 +424,7 @@ const handleStart=(e)=>{
         </Modal.Footer>
       </Modal>
       </div>
+      <Footer className='' />
     </>
   );
 }
