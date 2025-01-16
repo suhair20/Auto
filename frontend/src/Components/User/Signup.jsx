@@ -48,6 +48,8 @@ const Signup = ({isOpen,onRequestClose})=>{
       if (error?.data && error?.data?.message) {
         setError(error.data.message);
       } else {
+        console.log(error);
+        
         setError('An unexpected error occurred'); // Handle unexpected errors
       }
     }
