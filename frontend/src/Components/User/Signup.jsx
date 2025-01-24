@@ -5,16 +5,33 @@ import { useSignupMutation, useOtpMutation, useResendotpMutation } from '../../s
 import OTPModal from './OTPModal';
 import Header from './Header';
 import Modal from 'react-modal';
+import  Login from './Login'
 import { RiCloseCircleFill } from "react-icons/ri";
 
+
+
+
+
+
+
+
 const Signup = ({isOpen,onRequestClose})=>{
+
+
+
+
+
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [otpModalOpen, setOtpModalOpen] = useState(false)
+  const [loginOpen,setLoginOpen]=useState(false)
   const [error, setError] = useState('')
   const [otpError, setOtpError] = useState('')
+
+
+
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -22,6 +39,12 @@ const Signup = ({isOpen,onRequestClose})=>{
   const [signup, { isLoading: isSignupLoading }] = useSignupMutation()
   const [OTP, { isLoading: isOtpLoading }] = useOtpMutation()
   const [resendOtp, { isLoading: isResendLoading }] = useResendotpMutation()
+
+
+
+
+
+
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -54,15 +77,21 @@ const Signup = ({isOpen,onRequestClose})=>{
       }
     }
   }
+
+
+
   
 
   const handleOtpSubmit = async (otp) => {
     try {
       console.log('hwloo')
       const res = await OTP({ email, otp }).unwrap()
-      onRequestClose()
+      console.log(res);
       
-      navigate('/')
+      setOtpModalOpen(false)
+      
+      setLoginOpen(true)
+
     } catch (error) {
       console.log(error?.data?.message)
       if (error?.data && error?.data?.message) {
@@ -164,6 +193,13 @@ const Signup = ({isOpen,onRequestClose})=>{
         onSubmit={handleOtpSubmit}
         error={otpError}
       />
+
+  {loginOpen && (
+  <Login 
+    isOpen={loginOpen}
+    onRequestClose={() => setLoginOpen(false)}
+  />
+)}
     
     </>
   )
