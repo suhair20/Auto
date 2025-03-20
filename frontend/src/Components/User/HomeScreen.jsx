@@ -424,7 +424,7 @@ const handleStart=(e)=>{
          <img src="/taxii.png" alt="Image" className="h-[60vh] mx-auto" />
          <div className='flex flex-col items-center md:w-2/3' >
          <p className='text-5xl text-center text-white font-passion' >On Time, Every Time</p>
-         <p className='text-center text-white w-2/3' >We use cutting-edge technology to get you where you need to be—right on schedule.</p>
+         <p className='text-center text-white w-2/3' >We use cutting-edge technology to get you where you need to be—right on schedule</p>
          </div>
          </div>
 
