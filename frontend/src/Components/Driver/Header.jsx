@@ -29,7 +29,7 @@ function Header() {
      
              
     
-        <div className="flex cursor-pointer items-center">
+        <div className="cursor-pointer items-center">
         
           <Button  onClick={OpenloginModal} className="bg-transparent border-0">Login</Button>
         
